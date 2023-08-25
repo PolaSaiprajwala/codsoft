@@ -1,0 +1,53 @@
+import tkinter as tk
+
+#function for all the buttons
+def on_click(event):
+    current_text = result_var.get()
+    button_text = event.widget.cget("text")
+    
+    if button_text == "=":
+        try:
+            result = eval(current_text)
+            result_var.set(result)
+        except:
+            result_var.set("Error")
+    elif button_text == "C":
+        result_var.set("")
+    else:
+        result_var.set(current_text + button_text)
+
+#creating window for GUI
+app = tk.Tk()
+app.title("Simple_Calculator")
+
+#creating widgets
+result_var = tk.StringVar()
+result_var.set("")
+
+result_entry = tk.Entry(app,bg="gainsboro", textvar=result_var, font=("Helvetica", 20))
+result_entry.grid(row=0, column=0, columnspan=4, padx=10, pady=10)
+
+buttons = [
+     ".", "=", "+",
+    "7", "8", "9", "-",
+    "4", "5", "6", "*",
+    "1", "2", "3", "/",
+    "0"
+]
+
+buttonc = tk.Button(app,bg="OrangeRed", text="C", padx=20, pady=20, font=("Helvetica", 15))
+buttonc.grid(row=1, column=0, padx=5, pady=5)
+buttonc.bind("<Button-1>", on_click)
+row = 1
+col = 1
+
+for button_text in buttons:
+    button = tk.Button(app,bg="Orange", text=button_text, padx=20, pady=20, font=("Helvetica", 15))
+    button.grid(row=row, column=col, padx=5, pady=5)
+    button.bind("<Button-1>", on_click)
+    col += 1
+    if col > 3:
+        col = 0
+        row += 1
+
+app.mainloop()
